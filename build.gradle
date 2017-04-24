@@ -1,0 +1,5 @@
+apply from: "./.shared/libraries.gradle"
+
+project.group = 'msg134-hla_object'
+project.version = "${TS_HLA_ObjectVersion}"
+apply from: "./.shared/commons.gradle"

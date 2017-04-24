@@ -1,0 +1,13 @@
+{
+  "sutName"         : "TestFederate"
+  "resultDirectory" : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\18_SOMs_Ok_FOMs_Ok\TS_CS_Verification"
+  "fomFiles"        : [
+    { "fileName"    : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\18_SOMs_Ok_FOMs_Ok\TS_CS_Verification\FOM1.xml" }
+    { "fileName"    : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\18_SOMs_Ok_FOMs_Ok\TS_CS_Verification\FOM2.xml" }
+  ]
+  "somFiles"        : [
+    { "fileName"    : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\18_SOMs_Ok_FOMs_Ok\TS_CS_Verification\SOM1.xml" }
+    { "fileName"    : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\18_SOMs_Ok_FOMs_Ok\TS_CS_Verification\SOM2.xml" }
+    { "fileName"    : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\18_SOMs_Ok_FOMs_Ok\TS_CS_Verification\SOM3.xml" }
+  ]
+}

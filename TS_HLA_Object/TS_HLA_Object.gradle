@@ -1,0 +1,68 @@
+apply plugin: 'application'
+
+mainClassName = 'de.fraunhofer.iosb.testrunner.JMSTestRunner'
+
+dependencies {
+	compile     group: 'msg134-ivct-framework', name: 'IEEE1516e', version: ivctVersion
+	compile     group: 'msg134-ivct-framework', name: 'TC', version: ivctVersion
+	compile     group: 'msg134-ivct-framework', name: 'MessagingHelpers', version: ivctVersion
+    compile     group: 'msg134-common', name: 'ETC_FRA_Common', version: ETC_FRA_CommonVersion
+
+	compile     libraries.slf4j_api
+    
+	compile     fileTree(dir: 'libs', include: '*.jar')
+	compile     files('libs/com.springsource.org.dom4j-1.6.1.jar')
+	compile     files('libs/controlsfx-8.40.10.jar')
+	compile     files('libs/fr.itcs.sme.architecture.mm_3.0.0.201206041019.jar')
+	compile     files('libs/fr.itcs.sme.base.api_3.0.0.201206041019.jar')
+	compile     files('libs/fr.itcs.sme.base.core_3.0.0.201206041019.jar')
+	compile     files('libs/fr.itcs.sme.base.mm_3.0.0.201206041019.jar')
+	compile     files('libs/fr.itcs.sme.conception.mm_3.0.0.201206041019.jar')
+	compile     files('libs/fr.itcs.sme.configuration.mm_3.0.0.201206041019.jar')
+	compile     files('libs/fr.itcs.sme.deployment.mm_3.0.0.201206041019.jar')
+	compile     files('libs/fr.itcs.sme.specification.mm_3.0.0.201206041019.jar')
+	compile     files('libs/jdom-2.0.6.jar')
+	compile     files('libs/log4j-1.2-api-2.4.1.jar')
+	compile     files('libs/log4j-api-2.4.1.jar')
+	compile     files('libs/log4j-core-2.4.1.jar')
+	compile     files('libs/org.eclipse.core.runtime-3.1.0.jar')
+	compile     files('libs/org.eclipse.emf.common_2.5.0.v200906151043.jar')
+	compile     files('libs/org.eclipse.emf.ecore.xmi_2.5.0.v200906151043.jar')
+	compile     files('libs/org.eclipse.emf.ecore_2.5.0.v200906151043.jar')
+	compile     files('libs/org.eclipse.emf.edit_2.5.0.v200906151043.jar')
+	compile     files('libs/probatron.jar')
+	compile     files('libs/xercesImpl.jar')
+	
+    runtime     group: 'msg134-common', name: 'ETC_FRA_Common', version: ETC_FRA_CommonVersion
+
+	runtime		libraries.actimemqClient
+	runtime		libraries.logback_classic
+	runtime		libraries.logback_core
+	
+	runtime     libraries.slf4j_jcl_over_slf4j
+	runtime     libraries.slf4j_jul_to_slf4j
+	runtime     libraries.slf4j_log4j_over_slf4j
+
+	runtime     fileTree(dir: 'libs', include: '*.jar')
+	runtime     files('libs/com.springsource.org.dom4j-1.6.1.jar')
+	runtime     files('libs/controlsfx-8.40.10.jar')
+	runtime     files('libs/fr.itcs.sme.architecture.mm_3.0.0.201206041019.jar')
+	runtime     files('libs/fr.itcs.sme.base.api_3.0.0.201206041019.jar')
+	runtime     files('libs/fr.itcs.sme.base.core_3.0.0.201206041019.jar')
+	runtime     files('libs/fr.itcs.sme.base.mm_3.0.0.201206041019.jar')
+	runtime     files('libs/fr.itcs.sme.conception.mm_3.0.0.201206041019.jar')
+	runtime     files('libs/fr.itcs.sme.configuration.mm_3.0.0.201206041019.jar')
+	runtime     files('libs/fr.itcs.sme.deployment.mm_3.0.0.201206041019.jar')
+	runtime     files('libs/fr.itcs.sme.specification.mm_3.0.0.201206041019.jar')
+	runtime     files('libs/jdom-2.0.6.jar')
+	runtime     files('libs/log4j-1.2-api-2.4.1.jar')
+	runtime     files('libs/log4j-api-2.4.1.jar')
+	runtime     files('libs/log4j-core-2.4.1.jar')
+	runtime     files('libs/org.eclipse.core.runtime-3.1.0.jar')
+	runtime     files('libs/org.eclipse.emf.common_2.5.0.v200906151043.jar')
+	runtime     files('libs/org.eclipse.emf.ecore.xmi_2.5.0.v200906151043.jar')
+	runtime     files('libs/org.eclipse.emf.ecore_2.5.0.v200906151043.jar')
+	runtime     files('libs/org.eclipse.emf.edit_2.5.0.v200906151043.jar')
+	runtime     files('libs/probatron.jar')
+	runtime     files('libs/xercesImpl.jar')
+}

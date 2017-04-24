@@ -1,0 +1,10 @@
+{
+  "sutName"         : "TestFederate"
+  "resultDirectory" : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\16_SOM_not_in_FOM\TS_CS_Verification"
+  "fomFiles"        : [
+    { "fileName"    : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\16_SOM_not_in_FOM\TS_CS_Verification\MAKsimple1516e.xml" }
+  ]
+  "somFiles"        : [
+    { "fileName"    : "D:\Users\jehubler\Documents\GitHub\ETC_FRA_Config\IVCTsut\16_SOM_not_in_FOM\TS_CS_Verification\SOM_MAKsimple1516e.xml" }
+  ]
+}

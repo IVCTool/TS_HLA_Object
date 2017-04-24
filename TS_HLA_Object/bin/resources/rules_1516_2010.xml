@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<iso:schema xmlns:xsi="http://purl.oclc.org/dsdl/schematron" xmlns:iso="http://purl.oclc.org/dsdl/schematron" schemaVersion="ISO19757-3">
+	<iso:ns prefix="dp" uri="http://standards.ieee.org/IEEE1516-2010" />
+	<iso:title>SOM validation</iso:title>
+
+	<!--*********************************************************************************************************** -->
+	<!--************************ Definition des modèles de règles pour les services******************************** -->
+	<!--*********************************************************************************************************** -->
+
+	<iso:pattern abstract="true" id="vrai">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="dp:$p1/@isUsed='true'">$p1 = <iso:value-of select="dp:$p1/@isUsed"/> 
+      </iso:assert>  
+     </iso:rule>
+  </iso:pattern>
+ 
+	<iso:pattern abstract="true" id="implique">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="dp:$p1/@isUsed='false' or dp:$p2/@isUsed='true'">$p1 => $p2 
+<iso:value-of select="dp:$p1/@isUsed"/> => <iso:value-of select="dp:$p2/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+  
+	<iso:pattern abstract="true" id="implique2">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="dp:$p1/@isUsed='false' or dp:$p2/@isUsed='true' or dp:$p3/@isUsed='true'">$p1 => $p2 or $p3
+<iso:value-of select="dp:$p1/@isUsed"/> => <iso:value-of select="dp:$p2/@isUsed"/> or <iso:value-of select="dp:$p3/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="implique3">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="dp:$p1/@isUsed='false' or dp:$p2/@isUsed='true' or dp:$p3/@isUsed='true' or dp:$p4/@isUsed='true'">$p1 => $p2 or $p3 or $p4
+<iso:value-of select="dp:$p1/@isUsed"/> => <iso:value-of select="dp:$p2/@isUsed"/> or <iso:value-of select="dp:$p3/@isUsed"/> or <iso:value-of select="dp:$p4/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="implique4">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="dp:$p1/@isUsed='false' or dp:$p2/@isUsed='true' or $p3/@isUsed='true' or dp:$p4/@isUsed='true' or dp:$p5/@isUsed='true'">$p1 => $p2 or $p3 or $p4 or $p5
+<iso:value-of select="dp:$p1/@isUsed"/> => <iso:value-of select="dp:$p2/@isUsed"/> or <iso:value-of select="dp:$p3/@isUsed"/> or <iso:value-of select="dp:$p4/@isUsed"/> or <iso:value-of select="dp:$p5/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="implique5">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="dp:$p1/@isUsed='false' or dp:$p2/@isUsed='true' or dp:$p3/@isUsed='true' or dp:$p4/@isUsed='true' or $p5/@isUsed='true' or $p6/@isUsed='true'">$p1 => $p2 or $p3 or $p4 or $p5 or $p6
+<iso:value-of select="dp:$p1/@isUsed"/> => <iso:value-of select="dp:$p2/@isUsed"/> or <iso:value-of select="dp:$p3/@isUsed"/> or <iso:value-of select="dp:$p4/@isUsed"/> or <iso:value-of select="dp:$p5/@isUsed"/> or <iso:value-of select="dp:$p6/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="egal">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="dp:$p1/@isUsed=dp:$p2/@isUsed">$p1 = $p2 
+<iso:value-of select="dp:$p1/@isUsed"/> = <iso:value-of select="dp:$p2/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+
+	<iso:pattern abstract="true" id="egalEt1">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="(dp:$p1/@isUsed = dp:$p2/@isUsed) and (dp:$p3/@isUsed = dp:$p4/@isUsed)">($p1=$p2) and ($p3=$p4)
+<iso:value-of select="dp:$p1/@isUsed"/> = <iso:value-of select="dp:$p2/@isUsed"/> and <iso:value-of select="dp:$p3/@isUsed"/> = <iso:value-of select="dp:$p4/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="egalEt2">
+     <iso:rule context="dp:serviceUtilization">
+      <iso:assert test="(dp:$p1/@isUsed = dp:$p2/@isUsed) and (dp:$p3/@isUsed = dp:$p4/@isUsed) and (dp:$p5/@isUsed = dp:$p6/@isUsed)">($p1=$p2) and ($p3=$p4) and ($p5=$p6)
+<iso:value-of select="dp:$p1/@isUsed"/> = <iso:value-of select="dp:$p2/@isUsed"/> and <iso:value-of select="dp:$p3/@isUsed"/> = <iso:value-of select="dp:$p4/@isUsed"/> and <iso:value-of select="dp:$p5/@isUsed"/> = <iso:value-of select="dp:$p6/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+
+	<iso:pattern abstract="true" id="reg1">
+     <iso:rule context="dp:serviceUtilization">
+	<iso:assert test="(dp:$p1/@isUsed = 'false' ) or (dp:$p2/@isUsed = 'true' or ((dp:$p3/@isUsed = 'true' or dp:$p4/@isUsed ='true') and (dp:$p5/@isUsed = 'true' or dp:$p6/@isUsed = 'true' or dp:$p7/@isUsed = 'true' or dp:$p8/@isUsed ='true')))">$p1 => $p2 or (($p3 or $p4) and ($p5 or $p6 or $p7 or $p8))
+<iso:value-of select="dp:$p1/@isUsed"/> => <iso:value-of select="dp:$p2/@isUsed"/> or ( (<iso:value-of select="dp:$p3/@isUsed"/> or <iso:value-of select="dp:$p4/@isUsed"/>) and (<iso:value-of select="dp:$p5/@isUsed"/> or <iso:value-of select="dp:$p6/@isUsed"/> or <iso:value-of select="dp:$p7/@isUsed"/> or <iso:value-of select="dp:$p8/@isUsed"/>) )
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+  
+	<!--*********************************************************************************************************** -->
+	<!--************************ Test dépendances entre les services ********************************************* -->
+	<!--*********************************************************************************************************** -->
+
+	<iso:pattern is-a="vrai" id="vrai1">
+		<iso:param name="p1" value="joinFederationExecution" />
+	</iso:pattern>	
+	<iso:pattern is-a="vrai" id="vrai2">
+		<iso:param name="p1" value="resignFederationExecution" />
+	</iso:pattern>
+	<iso:pattern is-a="vrai" id="vrai3">
+		<iso:param name="p1" value="connect" />
+	</iso:pattern>
+	<iso:pattern is-a="vrai" id="vrai4">
+		<iso:param name="p1" value="disconnect" />
+	</iso:pattern>
+
+	<iso:pattern is-a="implique" id="imp1">
+		<iso:param name="p1" value="requestFederationSave" />
+		<iso:param name="p2" value="initiateFederateSave" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp2">
+		<iso:param name="p1" value="requestFederationRestore" />
+		<iso:param name="p2" value="federationRestoreBegun" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp3">
+		<iso:param name="p1" value="startRegistrationForObjectClass" />
+		<iso:param name="p2" value="publishObjectClassAttributes" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp4">
+		<iso:param name="p1" value="stopRegistrationForObjectClass" />
+		<iso:param name="p2" value="publishObjectClassAttributes" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp5">
+		<iso:param name="p1" value="turnInteractionsOn" />
+		<iso:param name="p2" value="publishInteractionClass" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp6">
+		<iso:param name="p1" value="turnInteractionsOff" />
+		<iso:param name="p2" value="publishInteractionClass" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp7">
+		<iso:param name="p1" value="registerObjectInstance" />
+		<iso:param name="p2" value="publishObjectClassAttributes" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp8">
+		<iso:param name="p1" value="sendInteraction" />
+		<iso:param name="p2" value="publishInteractionClass" />
+	</iso:pattern>
+<!-- 	<iso:pattern is-a="implique" id="imp9"> -->
+<!-- 		<iso:param name="p1" value="changeInteractionTransportationType" /> -->
+<!-- 		<iso:param name="p2" value="publishInteractionClass" /> -->
+<!-- 	</iso:pattern> -->
+	<iso:pattern is-a="implique" id="imp10">
+		<iso:param name="p1" value="requestAttributeOwnershipAssumption" />
+		<iso:param name="p2" value="publishObjectClassAttributes" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp11">
+		<iso:param name="p1" value="attributeOwnershipAcquisitionNotification" />
+		<iso:param name="p2" value="publishObjectClassAttributes" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp12">
+		<iso:param name="p1" value="attributeOwnershipAcquisition" />
+		<iso:param name="p2" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp13">
+		<iso:param name="p1" value="attributeOwnershipAcquisitionIfAvailable" />
+		<iso:param name="p2" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp14">
+		<iso:param name="p1" value="cancelNegotiatedAttributeOwnershipDivestiture" />
+		<iso:param name="p2" value="negotiatedAttributeOwnershipDivestiture" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp15">
+		<iso:param name="p1" value="cancelAttributeOwnershipAcquisition" />
+		<iso:param name="p2" value="attributeOwnershipAcquisition" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp16">
+		<iso:param name="p1" value="disableTimeRegulation" />
+		<iso:param name="p2" value="timeRegulationEnabled" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp17">
+		<iso:param name="p1" value="disableTimeConstrained" />
+		<iso:param name="p2" value="timeConstrainedEnabled" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp18">
+		<iso:param name="p1" value="timeAdvanceRequest" />
+		<iso:param name="p2" value="timeAdvanceGrant" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp19">
+		<iso:param name="p1" value="timeAdvanceRequestAvailable" />
+		<iso:param name="p2" value="timeAdvanceGrant" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp20">
+		<iso:param name="p1" value="nextMessageRequest" />
+		<iso:param name="p2" value="timeAdvanceGrant" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp21">
+		<iso:param name="p1" value="nextMessageRequestAvailable" />
+		<iso:param name="p2" value="timeAdvanceGrant" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp22">
+		<iso:param name="p1" value="flushQueueRequest" />
+		<iso:param name="p2" value="timeAdvanceGrant" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp23">
+		<iso:param name="p1" value="disableAsynchronousDelivery" />
+		<iso:param name="p2" value="enableAsynchronousDelivery" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp24">
+		<iso:param name="p1" value="modifyLookahead" />
+		<iso:param name="p2" value="enableTimeRegulation" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp25">
+		<iso:param name="p1" value="queryLookahead" />
+		<iso:param name="p2" value="enableTimeRegulation" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp26">
+		<iso:param name="p1" value="retract" />
+		<iso:param name="p2" value="enableTimeRegulation" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp27">
+		<iso:param name="p1" value="changeInteractionOrderType" />
+		<iso:param name="p2" value="publishInteractionClass" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp28">
+		<iso:param name="p1" value="commitRegionModifications" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp29">
+		<iso:param name="p1" value="deleteRegion" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp30">
+		<iso:param name="p1" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p2" value="publishObjectClassAttributes" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp31">
+		<iso:param name="p1" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp32">
+		<iso:param name="p1" value="associateRegionsForUpdates" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp33">
+		<iso:param name="p1" value="unassociateRegionsForUpdates" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp34">
+		<iso:param name="p1" value="subscribeObjectClassAttributesWithRegions" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp35">
+		<iso:param name="p1" value="unsubscribeObjectClassAttributesWithRegions" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp36">
+		<iso:param name="p1" value="subscribeInteractionClassWithRegions" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp37">
+		<iso:param name="p1" value="unsubscribeInteractionClassWithRegions" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp38">
+		<iso:param name="p1" value="sendInteractionWithRegions" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp39">
+		<iso:param name="p1" value="sendInteractionWithRegions" />
+		<iso:param name="p2" value="publishInteractionClass" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp40">
+		<iso:param name="p1" value="requestAttributeValueUpdateWithRegions" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp41">
+		<iso:param name="p1" value="enableObjectClassRelevanceAdvisorySwitch" />
+		<iso:param name="p2" value="startRegistrationForObjectClass" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp42">
+		<iso:param name="p1" value="enableObjectClassRelevanceAdvisorySwitch" />
+		<iso:param name="p2" value="stopRegistrationForObjectClass" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp43">
+		<iso:param name="p1" value="enableAttributeRelevanceAdvisorySwitch" />
+		<iso:param name="p2" value="turnUpdatesOnForObjectInstance" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp44">
+		<iso:param name="p1" value="enableAttributeRelevanceAdvisorySwitch" />
+		<iso:param name="p2" value="turnUpdatesOffForObjectInstance" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp45">
+		<iso:param name="p1" value="enableAttributeScopeAdvisorySwitch" />
+		<iso:param name="p2" value="attributesInScope" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp46">
+		<iso:param name="p1" value="enableAttributeScopeAdvisorySwitch" />
+		<iso:param name="p2" value="attributesOutOfScope" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp47">
+		<iso:param name="p1" value="enableInteractionRelevanceAdvisorySwitch" />
+		<iso:param name="p2" value="turnInteractionsOn" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp48">
+		<iso:param name="p1" value="enableInteractionRelevanceAdvisorySwitch" />
+		<iso:param name="p2" value="turnInteractionsOff" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp49">
+		<iso:param name="p1" value="getDimensionHandleSet" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp50">
+		<iso:param name="p1" value="getRangeBounds" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp51">
+		<iso:param name="p1" value="setRangeBounds" />
+		<iso:param name="p2" value="createRegion" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp52">
+		<iso:param name="p1" value="abortFederationSave" />
+		<iso:param name="p2" value="initiateFederateSave" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp53">
+		<iso:param name="p1" value="abortFederationSave" />
+		<iso:param name="p2" value="federationSaved" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp54">
+		<iso:param name="p1" value="abortFederationRestore" />
+		<iso:param name="p2" value="initiateFederateRestore" />
+	</iso:pattern>
+	<iso:pattern is-a="implique" id="imp55">
+		<iso:param name="p1" value="abortFederationRestore" />
+		<iso:param name="p2" value="federationRestored" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egal" id="eg1">
+		<iso:param name="p1" value="registerFederationSynchronizationPoint" />
+		<iso:param name="p2" value="confirmSynchronizationPointRegistration" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg2">
+		<iso:param name="p1" value="queryFederationSaveStatus" />
+		<iso:param name="p2" value="federationSaveStatusResponse" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg3">
+		<iso:param name="p1" value="queryFederationRestoreStatus" />
+		<iso:param name="p2" value="federationRestoreStatusResponse" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg4">
+		<iso:param name="p1" value="startRegistrationForObjectClass" />
+		<iso:param name="p2" value="stopRegistrationForObjectClass" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg5">
+		<iso:param name="p1" value="turnInteractionsOn" />
+		<iso:param name="p2" value="turnInteractionsOff" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg6">
+		<iso:param name="p1" value="reserveObjectInstanceName" />
+		<iso:param name="p2" value="objectInstanceNameReserved" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg7">
+		<iso:param name="p1" value="attributesInScope" />
+		<iso:param name="p2" value="attributesOutOfScope" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg8">
+		<iso:param name="p1" value="turnUpdatesOnForObjectInstance" />
+		<iso:param name="p2" value="turnUpdatesOffForObjectInstance" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg9">
+		<iso:param name="p1" value="attributeOwnershipAcquisitionIfAvailable" />
+		<iso:param name="p2" value="attributeOwnershipUnavailable" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg10">
+		<iso:param name="p1" value="cancelAttributeOwnershipAcquisition" />
+		<iso:param name="p2" value="confirmAttributeOwnershipAcquisitionCancellation" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg11">
+		<iso:param name="p1" value="queryAttributeOwnership" />
+		<iso:param name="p2" value="informAttributeOwnership" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg12">
+		<iso:param name="p1" value="enableTimeRegulation" />
+		<iso:param name="p2" value="timeRegulationEnabled" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg13">
+		<iso:param name="p1" value="enableTimeConstrained" />
+		<iso:param name="p2" value="timeConstrainedEnabled" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg14">
+		<iso:param name="p1" value="listFederationExecutions" />
+		<iso:param name="p2" value="reportFederationExecutions" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg15">
+		<iso:param name="p1" value="reserveMultipleObjectInstanceNames" />
+		<iso:param name="p2" value="multipleObjectInstanceNamesReserved" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg16">
+		<iso:param name="p1" value="requestAttributeTransportationTypeChange" />
+		<iso:param name="p2" value="confirmAttributeTransportationTypeChange" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg17">
+		<iso:param name="p1" value="queryAttributeTransportationType" />
+		<iso:param name="p2" value="reportAttributeTransportationType" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg18">
+		<iso:param name="p1" value="requestInteractionTransportationTypeChange" />
+		<iso:param name="p2" value="confirmInteractionTransportationTypeChange" />
+	</iso:pattern>
+	<iso:pattern is-a="egal" id="eg19">
+		<iso:param name="p1" value="queryInteractionTransportationType" />
+		<iso:param name="p2" value="reportInteractionTransportationType" />
+	</iso:pattern>
+
+	<iso:pattern is-a="implique2" id="imp2_1">
+		<iso:param name="p1" value="discoverObjectInstance" />
+		<iso:param name="p2" value="subscribeObjectClassAttributes" />
+		<iso:param name="p3" value="subscribeObjectClassAttributesWithRegions" />
+	</iso:pattern>
+	<iso:pattern is-a="implique2" id="imp2_2">
+		<iso:param name="p1" value="receiveInteraction" />
+		<iso:param name="p2" value="subscribeInteractionClass" />
+		<iso:param name="p3" value="subscribeObjectClassAttributesWithRegions" />
+	</iso:pattern>
+	<iso:pattern is-a="implique2" id="imp2_3">
+		<iso:param name="p1" value="requestAttributeOwnershipAssumption" />
+		<iso:param name="p2" value="attributeOwnershipAcquisitionIfAvailable" />
+		<iso:param name="p3" value="attributeOwnershipAcquisition" />
+	</iso:pattern>
+	<iso:pattern is-a="implique2" id="imp2_4">
+		<iso:param name="p1" value="attributeOwnershipAcquisitionNotification" />
+		<iso:param name="p2" value="attributeOwnershipAcquisition" />
+		<iso:param name="p3" value="attributeOwnershipAcquisitionIfAvailable" />
+	</iso:pattern>
+	<iso:pattern is-a="implique2" id="imp2_5">
+		<iso:param name="p1" value="releaseObjectInstanceName" />
+		<iso:param name="p2" value="objectInstanceNameReserved" />
+		<iso:param name="p3" value="multipleObjectInstanceNamesReserved" />
+	</iso:pattern>
+	<iso:pattern is-a="implique2" id="imp2_6">
+		<iso:param name="p1" value="releaseMultipleObjectInstanceNames" />
+		<iso:param name="p2" value="objectInstanceNameReserved" />
+		<iso:param name="p3" value="multipleObjectInstanceNamesReserved" />
+	</iso:pattern>
+	<iso:pattern is-a="implique2" id="imp2_7">
+		<iso:param name="p1" value="enableCallbacks" />
+		<iso:param name="p2" value="evokeCallback" />
+		<iso:param name="p3" value="evokeMultipleCallbacks" />
+	</iso:pattern>
+
+	<iso:pattern is-a="implique3" id="imp3_1">
+		<iso:param name="p1" value="deleteObjectInstance" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+<!-- 	<iso:pattern is-a="implique3" id="imp3_2"> -->
+<!-- 		<iso:param name="p1" value="changeAttributeTransportationType" /> -->
+<!-- 		<iso:param name="p2" value="registerObjectInstance" /> -->
+<!-- 		<iso:param name="p3" value="registerObjectInstanceWithRegions" /> -->
+<!-- 		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" /> -->
+<!-- 	</iso:pattern> -->
+	<iso:pattern is-a="implique3" id="imp3_3">
+		<iso:param name="p1" value="provideAttributeValueUpdate" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_4">
+		<iso:param name="p1" value="turnUpdatesOnForObjectInstance" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_5">
+		<iso:param name="p1" value="turnUpdatesOffForObjectInstance" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_6">
+		<iso:param name="p1" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_7">
+		<iso:param name="p1" value="negotiatedAttributeOwnershipDivestiture" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_8">
+		<iso:param name="p1" value="requestAttributeOwnershipRelease" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_9">
+		<iso:param name="p1" value="requestAttributeOwnershipRelease" />
+		<iso:param name="p2" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p3" value="negotiatedAttributeOwnershipDivestiture" />
+		<iso:param name="p4" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_10">
+		<iso:param name="p1" value="attributeOwnershipDivestitureIfWanted" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_11">
+		<iso:param name="p1" value="queryAttributeOwnership" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_12">
+		<iso:param name="p1" value="isAttributeOwnedByFederate" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_13">
+		<iso:param name="p1" value="requestRetraction" />
+		<iso:param name="p2" value="reflectAttributeValues" />
+		<iso:param name="p3" value="receiveInteraction" />
+		<iso:param name="p4" value="removeObjectInstance" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_14">
+		<iso:param name="p1" value="associateRegionsForUpdates" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_15">
+		<iso:param name="p1" value="unassociateRegionsForUpdates" />
+		<iso:param name="p2" value="registerObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p4" value="attributeOwnershipAcquisitionNotification" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_16">
+		<iso:param name="p1" value="getObjectInstanceHandle" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_17">
+		<iso:param name="p1" value="getObjectInstanceName" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+	</iso:pattern>
+	<iso:pattern is-a="implique3" id="imp3_18">
+		<iso:param name="p1" value="getKnownObjectClassHandle" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+	</iso:pattern>
+
+	<iso:pattern is-a="implique4" id="imp4_1">
+		<iso:param name="p1" value="retract" />
+		<iso:param name="p2" value="updateAttributeValues" />
+		<iso:param name="p3" value="sendInteraction" />
+		<iso:param name="p4" value="sendInteractionWithRegions" />
+		<iso:param name="p5" value="deleteObjectInstance" />
+	</iso:pattern>
+	<iso:pattern is-a="implique4" id="imp4_2">
+		<iso:param name="p1" value="requestAttributeOwnershipRelease" />
+		<iso:param name="p2" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p3" value="negotiatedAttributeOwnershipDivestiture" />
+		<iso:param name="p4" value="attributeOwnershipDivestitureIfWanted" />
+		<iso:param name="p5" value="attributeOwnershipReleaseDenied" />
+	</iso:pattern>
+
+	<iso:pattern is-a="implique5" id="imp5_1">
+		<iso:param name="p1" value="timeAdvanceGrant" />
+		<iso:param name="p2" value="timeAdvanceRequest" />
+		<iso:param name="p3" value="timeAdvanceRequestAvailable" />
+		<iso:param name="p4" value="nextMessageRequest" />
+		<iso:param name="p5" value="nextMessageRequestAvailable" />
+		<iso:param name="p6" value="flushQueueRequest" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egalEt1" id="egalEt1_1">
+		<iso:param name="p1" value="announceSynchronizationPoint" />
+		<iso:param name="p2" value="synchronizationPointAchieved" />
+		<iso:param name="p3" value="synchronizationPointAchieved" />
+		<iso:param name="p4" value="federationSynchronized" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egalEt1" id="egalEt1_2">
+		<iso:param name="p1" value="negotiatedAttributeOwnershipDivestiture" />
+		<iso:param name="p2" value="requestDivestitureConfirmation" />
+		<iso:param name="p3" value="requestDivestitureConfirmation" />
+		<iso:param name="p4" value="confirmDivestiture" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egalEt2" id="egalEt2_1">
+		<iso:param name="p1" value="initiateFederateSave" />
+		<iso:param name="p2" value="federateSaveBegun" />
+		<iso:param name="p3" value="federateSaveBegun" />
+		<iso:param name="p4" value="federateSaveComplete" />
+		<iso:param name="p5" value="federateSaveComplete" />
+		<iso:param name="p6" value="federationSaved" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egalEt2" id="egalEt2_2">
+		<iso:param name="p1" value="federationRestoreBegun" />
+		<iso:param name="p2" value="initiateFederateRestore" />
+		<iso:param name="p3" value="initiateFederateRestore" />
+		<iso:param name="p4" value="federateRestoreComplete" />
+		<iso:param name="p5" value="federateRestoreComplete" />
+		<iso:param name="p6" value="federationRestored" />
+	</iso:pattern>
+
+
+	<iso:pattern is-a="reg1" id="reg1_1">
+		<iso:param name="p1" value="reflectAttributeValues" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p5" value="unpublishObjectClassAttributes" />
+		<iso:param name="p6" value="confirmDivestiture" />
+		<iso:param name="p7" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p8" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+
+	<iso:pattern is-a="reg1" id="reg1_2">
+		<iso:param name="p1" value="removeobjectinstance" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p5" value="unpublishObjectClassAttributes" />
+		<iso:param name="p6" value="confirmDivestiture" />
+		<iso:param name="p7" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p8" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+	<iso:pattern is-a="reg1" id="reg1_3">
+		<iso:param name="p1" value="localDeleteObjectInstance" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p5" value="unpublishObjectClassAttributes" />
+		<iso:param name="p6" value="confirmDivestiture" />
+		<iso:param name="p7" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p8" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+	<iso:pattern is-a="reg1" id="reg1_4">
+		<iso:param name="p1" value="attributesInScope" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p5" value="unpublishObjectClassAttributes" />
+		<iso:param name="p6" value="confirmDivestiture" />
+		<iso:param name="p7" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p8" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+	<iso:pattern is-a="reg1" id="reg1_5">
+		<iso:param name="p1" value="attributesOutOfScope" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p5" value="unpublishObjectClassAttributes" />
+		<iso:param name="p6" value="confirmDivestiture" />
+		<iso:param name="p7" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p8" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+	<iso:pattern is-a="reg1" id="reg1_6">
+		<iso:param name="p1" value="requestAttributeOwnershipAssumption" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p5" value="unpublishObjectClassAttributes" />
+		<iso:param name="p6" value="confirmDivestiture" />
+		<iso:param name="p7" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p8" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+	<iso:pattern is-a="reg1" id="reg1_7">
+		<iso:param name="p1" value="attributeOwnershipAcquisitionNotification" />
+		<iso:param name="p2" value="discoverObjectInstance" />
+		<iso:param name="p3" value="registerObjectInstance" />
+		<iso:param name="p4" value="registerObjectInstanceWithRegions" />
+		<iso:param name="p5" value="unpublishObjectClassAttributes" />
+		<iso:param name="p6" value="confirmDivestiture" />
+		<iso:param name="p7" value="unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p8" value="attributeOwnershipDivestitureIfWanted" />
+	</iso:pattern>
+
+
+<!--************************************************************************************************************ -->
+<!--***********Modeles des règles pour les tests entre les objets/interactions et les services****************** -->
+<!--************************************************************************************************************ -->
+
+	<iso:pattern abstract="true" id="egal_servobj">
+     <iso:rule context="dp:objectModel">
+      <iso:assert test="(dp:$p1/@isUsed='true' and $p2) or (dp:$p1/@isUsed='false' and not($p2))">$p1 = $p2 
+<iso:value-of select="dp:$p1/@isUsed"/> = <iso:value-of select="$p2"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="egal_servobj_2">
+     <iso:rule context="dp:objectModel">
+      <iso:assert test="$p3 = not(dp:$p1/@isUsed='false' and dp:$p2/@isUsed='false')">$p3 = $p1 or $p2
+<iso:value-of select="$p3"/> = <iso:value-of select="dp:$p1/@isUsed"/> or <iso:value-of select="dp:$p2/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="egal_servobj_3">
+     <iso:rule context="dp:objectModel">
+      <iso:assert test="$p4 = not(dp:$p1/@isUsed='false' and dp:$p2/@isUsed='false' and dp:$p3/@isUsed='false')">$p4 = $p1 or $p2 or $p3
+<iso:value-of select="$p4"/> = <iso:value-of select="dp:$p1/@isUsed"/> or <iso:value-of select="dp:$p2/@isUsed"/> or <iso:value-of select="dp:$p3/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="implique_servobj">
+     <iso:rule context="dp:objectModel">
+      <iso:assert test="not($p3) or (dp:$p1/@isUsed='true' or dp:$p2/@isUsed='true')">$p3 => $p1 or $p2 
+<iso:value-of select="$p3"/> => <iso:value-of select="dp:$p1/@isUsed"/> or <iso:value-of select="dp:$p2/@isUsed"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+	<iso:pattern abstract="true" id="implique_servobj_1">
+     <iso:rule context="dp:objectModel">
+      <iso:assert test="dp:$p1/@isUsed = 'false' or $p2">$p1 => $p2 
+<iso:value-of select="dp:$p1/@isUsed"/> => <iso:value-of select="$p2"/>
+      </iso:assert>  
+     </iso:rule>
+  	</iso:pattern>
+
+<!--************************************************************************************************************ -->
+<!--******************Test des règles sur les objets/interactions et les services****************** -->
+<!--*********************************************************************************************************** -->
+
+	<iso:pattern is-a="egal_servobj" id="egal_servobj1">
+		<iso:param name="p1" value="serviceUtilization/dp:publishObjectClassAttributes" />
+		<iso:param name="p2" value="((count(//dp:attribute[dp:sharing='PublishSubscribe']) + count(//dp:attribute[dp:sharing='Publish']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egal_servobj" id="egal_servobj2">
+		<iso:param name="p1" value="serviceUtilization/dp:publishInteractionClass" />
+		<iso:param name="p2" value="((count(//dp:interactionClass[dp:sharing='PublishSubscribe']) + count(//dp:interactionClass[dp:sharing='Publish']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egal_servobj" id="egal_servobj3">
+		<iso:param name="p1" value="serviceUtilization/dp:attributeOwnershipAcquisitionNotification" />
+		<iso:param name="p2" value="((count(//dp:attribute[dp:ownership='DivestAcquire']) + count(//dp:attribute[dp:ownership='Acquire']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egal_servobj" id="egal_servobj4">
+		<iso:param name="p1" value="serviceUtilization/dp:updateAttributeValues" />
+		<iso:param name="p2" value="((count(//dp:attribute[dp:sharing='PublishSubscribe']) + count(//dp:attribute[dp:sharing='Publish']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egal_servobj" id="egal_servobj5">
+		<iso:param name="p1" value="serviceUtilization/dp:reflectAttributeValues" />
+		<iso:param name="p2" value="((count(//dp:attribute[dp:sharing='PublishSubscribe']) + count(//dp:attribute[dp:sharing='Subscribe']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egal_servobj_2" id="egal_servobj6">
+		<iso:param name="p1" value="serviceUtilization/dp:subscribeObjectClassAttributes" />
+		<iso:param name="p2" value="serviceUtilization/dp:subscribeObjectClassAttributesWithRegions" />
+		<iso:param name="p3" value="((count(//dp:attribute[dp:sharing='PublishSubscribe']) + count(//dp:attribute[dp:sharing='Subscribe']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="egal_servobj_3" id="egal_servobj7">
+		<iso:param name="p1" value="serviceUtilization/dp:confirmDivestiture" />
+		<iso:param name="p2" value="serviceUtilization/dp:unconditionalAttributeOwnershipDivestiture" />
+		<iso:param name="p3" value="serviceUtilization/dp:attributeOwnershipDivestitureIfWanted" />
+		<iso:param name="p4" value="((count(//dp:interactionClass[dp:ownership='DivestAcquire']) + count(//dp:interactionClass[dp:ownership='Divest']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="implique_servobj" id="implique_servobj1">
+		<iso:param name="p1" value="serviceUtilization/dp:subscribeInteractionClass" />
+		<iso:param name="p2" value="serviceUtilization/dp:subscribeInteractionClassWithRegions" />
+		<iso:param name="p3" value="((count(//dp:interactionClass[dp:sharing='PublishSubscribe']) + count(//dp:interactionClass[dp:sharing='Subscribe']))> 0)" />
+	</iso:pattern>
+
+	<iso:pattern is-a="implique_servobj_1" id="implique_servobj11">
+		<iso:param name="p1" value="serviceUtilization/dp:receiveInteraction" />
+		<iso:param name="p2" value="((count(//dp:interactionClass[dp:sharing='PublishSubscribe']) + count(//dp:interactionClass[dp:sharing='Subscribe']))> 0)" />
+	</iso:pattern>
+
+</iso:schema>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
