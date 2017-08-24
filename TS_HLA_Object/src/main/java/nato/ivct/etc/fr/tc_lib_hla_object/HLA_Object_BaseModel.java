@@ -1,5 +1,5 @@
 /*
-Copyright 2017, Fr Capgemini, R. Mauget/JF. Hubler
+Copyright 2017, FRANCE (DGA/Capgemini)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -69,9 +69,10 @@ import hla.rti1516e.exceptions.SaveInProgress;
 import hla.rti1516e.exceptions.UnsupportedCallbackModel;
 
 import nato.ivct.etc.fr.fctt_common.configuration.controller.validation.FCTTFilesCheck;
+import nato.ivct.etc.fr.fctt_common.federate.FCTTHandleList;
+import nato.ivct.etc.fr.fctt_common.federate.FCTTParse;
 import nato.ivct.etc.fr.fctt_common.resultData.model.DataHLA;
 import nato.ivct.etc.fr.fctt_common.resultData.model.ResultDataModel;
-import nato.ivct.etc.fr.fctt_common.federate.FCTTHandleList;
 import nato.ivct.etc.fr.fctt_common.utils.FCTT_Constant;
 import nato.ivct.etc.fr.fctt_common.utils.FCTT_Enum.eBuildResults;
 import nato.ivct.etc.fr.fctt_common.utils.FCTT_Enum.eModelDataHLAUpdatingWay;
@@ -82,7 +83,7 @@ import nato.ivct.etc.fr.fctt_common.utils.TextInternationalization;
 import org.slf4j.Logger;
 
 /**
- * @author Fr Capgemini, R. Mauget/JF. Hubler
+ * @author FRANCE (DGA/Capgemini)
  */
 public class HLA_Object_BaseModel extends IVCT_BaseModel {
 
@@ -204,7 +205,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
             federationRTIVersionId = ivct_rti.getAttributeHandle(federationId, "HLARTIversion");
         }
         catch (NameNotFound | FederateNotExecutionMember | NotConnected | RTIinternalError | InvalidObjectClassHandle ex) {
-            logger.debug("Cannot get object class handle");
+            logger.error("Cannot get object class handle");
             return true;
         }
         
@@ -220,7 +221,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
         	federationSet.add(federationRTIVersionId);
         }
         catch (FederateNotExecutionMember | NotConnected ex) {
-            logger.debug("Cannot build attribute set");
+            logger.error("Cannot build attribute set");
             return true;
         }
         
@@ -230,7 +231,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
             ivct_rti.subscribeObjectClassAttributes(federationId,federationSet);
         }
         catch (AttributeNotDefined | ObjectClassNotDefined | SaveInProgress | RestoreInProgress | FederateNotExecutionMember | NotConnected | RTIinternalError ex) {
-        	logger.debug("Cannot subscribe attributes");
+        	logger.error("Cannot subscribe attributes");
         	return true;
         }
         
@@ -245,7 +246,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
             returnedArgumentsId = ivct_rti.getParameterHandle(reportServiceInvocationId, "HLAreturnedArguments");
         }
     	catch (NameNotFound | FederateNotExecutionMember | NotConnected | RTIinternalError | InvalidInteractionClassHandle e) {
-	    	logger.debug("Cannot subscribe attributes");
+	    	logger.error("Cannot subscribe attributes");
 	    	return true;
 		}
 
@@ -271,7 +272,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 			reportingServiceId = ivct_rti.getInteractionClassHandle("HLAmanager.HLAfederate.HLAadjust.HLAsetServiceReporting");
 		}
 		catch (NameNotFound | FederateNotExecutionMember | NotConnected | RTIinternalError ex) {
-        	logger.debug("RTI internal error");
+        	logger.error("RTI internal error");
             return true;
 		}
 		
@@ -290,7 +291,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
             	reportingParameters = ivct_rti.getParameterHandleValueMapFactory().create(2);
             }
             catch (FederateNotExecutionMember | NotConnected | NameNotFound | InvalidInteractionClassHandle ex) {
-            	logger.debug("Cannot set interaction parameters");
+            	logger.error("Cannot set interaction parameters");
             	return true;
             }
             // Encode values
@@ -303,12 +304,12 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
                 ivct_rti.sendInteraction(reportingServiceId, reportingParameters, null);
             }
             catch (InteractionClassNotPublished | InteractionParameterNotDefined | InteractionClassNotDefined | SaveInProgress | RestoreInProgress | FederateNotExecutionMember | NotConnected | RTIinternalError ex) {
-            	logger.debug("Cannot send interaction");
+            	logger.error("Cannot send interaction");
             	return true;
             }
 		}
 		catch (FederateNotExecutionMember | NotConnected | RTIinternalError | FederateServiceInvocationsAreBeingReportedViaMOM | InteractionClassNotDefined | SaveInProgress | RestoreInProgress ex) {
-            logger.debug("Cannot get subscribe interaction class");
+            logger.error("Cannot get subscribe interaction class");
             return true;
 		}
 		// All ok
@@ -473,8 +474,8 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
     private void doReceiveInteraction(final InteractionClassHandle interactionClass, final ParameterHandleValueMap theParameters) {
 
         // Update data model
-    	logger.debug(String.format("Interaction : %s",interactionClass.toString()));
-    	logger.debug(String.format("Parameters : %s",theParameters.toString()));
+//    	logger.debug(String.format("Interaction : %s",interactionClass.toString()));
+//    	logger.debug(String.format("Parameters : %s",theParameters.toString()));
     	
     	try {
 			String interactionClassName = ivct_rti.getInteractionClassName(interactionClass);
@@ -497,7 +498,20 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 		    			{
 		    				if (RTImak)
 		    				{
-		    				} else // RTI Pitch
+				    			// Class name
+				    			final HLAvariableArray<HLAunicodeString> objectClassDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
+				    			objectClassDecoder.decode(theParameters.get(suppliedArgumentsId));
+				    			HLAunicodeString objectClass = (HLAunicodeString) objectClassDecoder.get(0);
+				    			String objectClassFull = handleList.getObjectClassName(FCTTParse.getS1(objectClass.getValue().trim()));
+				    			// Object handle
+				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
+				    			objectDecoder.decode(theParameters.get(returnedArgumentsId));
+				    			HLAunicodeString objectHandle = (HLAunicodeString) objectDecoder.get(0);
+// 								logger.debug("registerObjectInstance " + objectClassFull + " - " + objectHandle);
+				    			// Mapping object/class
+				    			mapObjectInstanceClass.put(objectHandle.getValue().trim(),objectClassFull);
+		    				}
+		    				else // RTI Pitch
 		    				{
 				    			// Class name
 				    			final HLAvariableArray<HLAunicodeString> objectClassDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
@@ -508,6 +522,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
 				    			objectDecoder.decode(theParameters.get(returnedArgumentsId));
 				    			HLAunicodeString objectHandle = (HLAunicodeString) objectDecoder.get(0);
+// 								logger.debug("registerObjectInstance " + objectClassFull + " - " + objectHandle);
 				    			// Mapping object/class
 				    			mapObjectInstanceClass.put(objectHandle.getValue().trim(),objectClassFull);
 		    				}
@@ -516,7 +531,18 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 		    			{
 		    				if (RTImak)
 		    				{
-		    				} else // RTI Pitch
+				    			// Class name
+				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
+				    			objectDecoder.decode(theParameters.get(suppliedArgumentsId));
+				    			HLAunicodeString objectClass = (HLAunicodeString) objectDecoder.get(1);
+				    			String objectClassFull = handleList.getObjectClassName(FCTTParse.getS1(objectClass.getValue().trim()));
+		    					// Object handle
+				    			HLAunicodeString objectHandle = (HLAunicodeString) objectDecoder.get(0);
+// 								logger.debug("discoverObjectInstance " + objectClassFull + " - " + objectHandle);
+				    			// Mapping object/class
+				    			mapObjectInstanceClass.put(objectHandle.getValue().trim(),objectClassFull);
+		    				}
+		    				else // RTI Pitch
 		    				{
 				    			// Class name
 				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
@@ -525,6 +551,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 				    			String objectClassFull = handleList.getObjectClassName(objectClass.getValue().trim());
 		    					// Object handle
 				    			HLAunicodeString objectHandle = (HLAunicodeString) objectDecoder.get(0);
+// 								logger.debug("discoverObjectInstance " + objectClassFull + " - " + objectHandle);
 				    			// Mapping object/class
 				    			mapObjectInstanceClass.put(objectHandle.getValue().trim(),objectClassFull);
 		    				}
@@ -533,7 +560,30 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 		    			{
 		    				if (RTImak)
 		    				{
-		    				} else // RTI Pitch
+		    					// Object handle
+				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
+				    			objectDecoder.decode(theParameters.get(suppliedArgumentsId));
+				    			HLAunicodeString objectHandle = (HLAunicodeString) objectDecoder.get(0);
+				    			// Retrieve object class name
+				    			String objectClass = mapObjectInstanceClass.get(FCTTParse.getS1(objectHandle.getValue().trim()));
+				    			if (objectClass != null)
+				    			{
+					    			// Attributes
+					    			HLAunicodeString attributes = (HLAunicodeString) objectDecoder.get(1);
+					    			String lAttributesFull = FCTTParse.getS1(attributes.getValue());
+					    			String[] lAttributesFullSplit = lAttributesFull.split(",");		    		
+					    			ArrayList<String> lAttributes = new ArrayList<String>();
+					    			for (int i = 0; i < lAttributesFullSplit.length; i++)
+					    			{
+					    				// Attributes names
+				    					lAttributes.add(handleList.getAttributeClassName(objectClass,lAttributesFullSplit[i].trim()).toLowerCase());
+					    			}
+//									logger.debug("updateAttributeValues " + lAttributes);
+                                    // Update datas
+				    				HlaResultDataModel.updateState(objectClass,lAttributes,eModelDataHLAUpdatingWay.Send);
+				    			}
+		    				}
+		    				else // RTI Pitch
 		    				{
 		    					// Object handle
 				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
@@ -558,6 +608,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 					    					lAttributes.add(handleList.getAttributeClassName(objectClass,lAttributesFullSplit[i].trim()).toLowerCase());
 					    				}
 					    			}
+//									logger.debug("updateAttributeValues " + lAttributes);
                                     // Update datas
 				    				HlaResultDataModel.updateState(objectClass,lAttributes,eModelDataHLAUpdatingWay.Send);
 				    			}
@@ -567,7 +618,30 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 		    			{
 		    				if (RTImak)
 		    				{
-		    				} else // RTI Pitch
+		    					// Object handle
+				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
+				    			objectDecoder.decode(theParameters.get(suppliedArgumentsId));
+				    			HLAunicodeString objectHandle = (HLAunicodeString) objectDecoder.get(0);
+				    			// Retrieve object class name
+				    			String objectClass = mapObjectInstanceClass.get(objectHandle.getValue().trim());
+				    			if (objectClass != null)
+				    			{
+					    			// Attributes
+					    			HLAunicodeString attributes = (HLAunicodeString) objectDecoder.get(1);
+					    			String lAttributesFull = FCTTParse.getS1(attributes.getValue());
+					    			String[] lAttributesFullSplit = lAttributesFull.split(",");		    		
+					    			ArrayList<String> lAttributes = new ArrayList<String>();
+					    			for (int i = 0; i < lAttributesFullSplit.length; i++)
+					    			{
+					    				// Attributes names
+				    					lAttributes.add(handleList.getAttributeClassName(objectClass,lAttributesFullSplit[i].trim()).toLowerCase());
+					    			}
+//									logger.debug("reflectAttributeValues " + lAttributes);
+                                    // Update datas
+				    				HlaResultDataModel.updateState(objectClass,lAttributes,eModelDataHLAUpdatingWay.Receive);
+				    			}
+		    				}
+		    				else // RTI Pitch
 		    				{
 		    					// Object handle
 				    			final HLAvariableArray<HLAunicodeString> objectDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
@@ -592,6 +666,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 					    					lAttributes.add(handleList.getAttributeClassName(objectClass,lAttributesFullSplit[i].trim()).toLowerCase());
 					    				}
 					    			}
+//									logger.debug("reflectAttributeValues " + lAttributes);
                                     // Update datas
 				    				HlaResultDataModel.updateState(objectClass,lAttributes,eModelDataHLAUpdatingWay.Receive);
 				    			}
@@ -601,7 +676,17 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 						{
 		    				if (RTImak)
 		    				{
-		    				} else // RTI Pitch
+                                // Interaction name
+				    			final HLAvariableArray<HLAunicodeString> interactionDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
+				    			interactionDecoder.decode(theParameters.get(suppliedArgumentsId));
+				    			HLAunicodeString interaction = (HLAunicodeString) interactionDecoder.get(0);
+                                // Interaction class
+				    			String interactionClassFull = handleList.getInteractionClassName(FCTTParse.getS1(interaction.getValue().trim()));
+// 								logger.debug("sendInteraction " + interactionClassFull);
+                                // Update datas
+				    			HlaResultDataModel.updateState(interactionClassFull,null,eModelDataHLAUpdatingWay.Send);
+		    				}
+		    				else // RTI Pitch
 		    				{
                                 // Interaction name
 				    			final HLAvariableArray<HLAunicodeString> interactionDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
@@ -609,6 +694,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 				    			HLAunicodeString interaction = (HLAunicodeString) interactionDecoder.get(0);
                                 // Interaction class
 				    			String interactionClassFull = handleList.getInteractionClassName(interaction.getValue().trim());
+//  								logger.debug("sendInteraction " + interactionClassFull);
                                 // Update datas
 				    			HlaResultDataModel.updateState(interactionClassFull,null,eModelDataHLAUpdatingWay.Send);
 		    				}
@@ -617,7 +703,17 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 						{
 		    				if (RTImak)
 		    				{
-		    				} else // RTI Pitch
+                                // Interaction name
+				    			final HLAvariableArray<HLAunicodeString> interactionDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
+				    			interactionDecoder.decode(theParameters.get(suppliedArgumentsId));
+				    			HLAunicodeString interaction = (HLAunicodeString) interactionDecoder.get(0);
+                                // Interaction class
+				    			String interactionClassFull = handleList.getInteractionClassName(FCTTParse.getS1(interaction.getValue().trim()));
+ //								logger.debug("receiveInteraction " + interactionClassFull);
+				    			// Update datas
+				    			HlaResultDataModel.updateState(interactionClassFull,null,eModelDataHLAUpdatingWay.Receive);
+		    				}
+		    				else // RTI Pitch
 		    				{
                                 // Interaction name
 				    			final HLAvariableArray<HLAunicodeString> interactionDecoder = _encoderFactory.createHLAvariableArray(unicodeStringFactory,_encoderFactory.createHLAunicodeString());
@@ -625,18 +721,21 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 				    			HLAunicodeString interaction = (HLAunicodeString) interactionDecoder.get(0);
                                 // Interaction class
 				    			String interactionClassFull = handleList.getInteractionClassName(interaction.getValue().trim());
+// 								logger.debug("receiveInteraction " + interactionClassFull);
 				    			// Update datas
 				    			HlaResultDataModel.updateState(interactionClassFull,null,eModelDataHLAUpdatingWay.Receive);
 		    				}
 						}
 					}
-				} catch (DecoderException e) {
-	                logger.debug("Failed to decode incoming attribute");
+				}
+	    		catch (DecoderException e) {
+	                logger.error("Failed to decode incoming attribute");
 	                return;
 	 			}
 			}
-		} catch (InvalidInteractionClassHandle | FederateNotExecutionMember	| NotConnected | RTIinternalError e) {
-            logger.debug("Failed to decode incoming attribute");
+		}
+    	catch (InvalidInteractionClassHandle | FederateNotExecutionMember	| NotConnected | RTIinternalError e) {
+            logger.error("Failed to decode incoming attribute");
             return;
 		}
     }
@@ -706,7 +805,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 				federateName = stringDecoder.getValue();
 				
 			} catch (DecoderException e) {
-                logger.debug("Failed to decode incoming attribute");
+                logger.error("Failed to decode incoming attribute");
                 return;
  			}
     	}
@@ -716,7 +815,7 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 
     	if ((federateName.equals(sutName)) && (federateHandle != null)) {
 			if (needToFollowFederate(federateHandle) == false) {
-	            logger.debug("following federate " + sutName);
+	            logger.info("following federate " + sutName);
 			}
 		}
     	
@@ -728,18 +827,10 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 				final String RTIversion = stringDecoder.getValue();
 				
 				logger.debug("RTI version = " + RTIversion);
-				
-				if (RTIversion.contains("MAK"))
-				{
-					logger.debug("RTI MAK");
-					RTImak = true;
-				}
-				else
-				{
-					logger.debug("RTI PITCH");
-				}
-			} catch (DecoderException e) {
-                logger.debug("Failed to decode incoming attribute");
+				RTImak = (RTIversion.contains("MAK"));
+
+    		} catch (DecoderException e) {
+                logger.error("Failed to decode incoming attribute");
                 return;
  			}
     	}

@@ -1,5 +1,5 @@
 /*
-Copyright 2017, Fr Capgemini, R. Mauget/JF. Hubler
+Copyright 2017, FRANCE (DGA/Capgemini)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import org.slf4j.Logger;
 import java.io.File;
 
 /**
- * @author Fr Capgemini, R. Mauget/JF. Hubler
+ * @author FRANCE (DGA/Capgemini)
  */
 public class TC_001_Object_Interaction_Check extends AbstractTestCase {
     FederateHandle                              TcFederateHandle;
