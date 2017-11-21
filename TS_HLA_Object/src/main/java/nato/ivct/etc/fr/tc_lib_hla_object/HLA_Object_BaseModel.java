@@ -96,7 +96,11 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 	// RTI
     private IVCT_RTIambassador      ivct_rti;
     private EncoderFactory          _encoderFactory;
-    
+     
+// 2017/11/15 ETC FRA V1.3, Capgemini, to avoid several detections of federate to follow
+    // SUT management
+	private byte[] 					sutHandle = null;
+   
 	// SUT data model
 	private DataHLA 				HlaDataModel;
 	private ResultDataModel			HlaResultDataModel;
@@ -813,9 +817,13 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 			federateHandle = theAttributes.get(federateHandleId); 
     	}
 
-    	if ((federateName.equals(sutName)) && (federateHandle != null)) {
+// 2017/11/15 ETC FRA V1.3, Capgemini, to avoid several detections of federate to follow
+//    	if ((federateName.equals(sutName)) && (federateHandle != null)) {
+    	if ((sutHandle == null) && (federateName.equals(sutName)) && (federateHandle != null)) {
 			if (needToFollowFederate(federateHandle) == false) {
 	            logger.info("following federate " + sutName);
+// 2017/11/15 ETC FRA V1.3, Capgemini, to avoid several detections of federate to follow
+				sutHandle = federateHandle;
 			}
 		}
     	
