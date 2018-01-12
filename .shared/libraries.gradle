@@ -12,8 +12,8 @@ ext {
 		ivctVersion = '0.3.1'
 		
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ TS_HLA_Object settings
-        ETC_FRA_CommonVersion = '0.0.1'
-		TS_HLA_ObjectVersion = '0.0.1'
+        ETC_FRA_CommonVersion = '1.0.0'
+		TS_HLA_ObjectVersion = '1.0.0'
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
         junitVersion = '4.+'

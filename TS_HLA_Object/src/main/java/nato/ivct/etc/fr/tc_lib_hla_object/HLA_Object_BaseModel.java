@@ -343,27 +343,41 @@ public class HLA_Object_BaseModel extends IVCT_BaseModel {
 	    	String formatter = "%-" + lMaxLengthData + "s %-5s %-45s %-5s %-45s%n";
 	    	String headerFormatter = "%-"+lMaxLengthData+"s %-50s %-50s%n";
 	    	
-	    	// Write result files & logs
+	    	// Write result files
 	    	String result;
 	    	result = saveResultsWriteHeader(lCurrentDate, eBuildResults.DataCertificated);
 	    	certifiedDataResult.write(result);
-	    	logger.info(result);
+	    	// 2018/01/09 ETC FRA 1.4, Capgemini, results not logged
+			// logger.info(result);
 	    	result = String.format(headerFormatter, "", TextInternationalization.getString("resultsFile.headerColumns.data.sending"), TextInternationalization.getString("resultsFile.headerColumns.data.reception"));
 	    	certifiedDataResult.write(result);
-			logger.info(result);
+			// 2018/01/09 ETC FRA 1.4, Capgemini, results not logged
+			// logger.info(result);
 	    	result = HlaResultDataModel.writeResults(eBuildResults.DataCertificated, fileWriter, formatter).getString();
 	    	certifiedDataResult.write(result);
-	    	logger.info(result);
+	    	// 2018/01/09 ETC FRA 1.4, Capgemini, results not logged
+			// logger.info(result);
 
 	    	result = saveResultsWriteHeader(lCurrentDate, eBuildResults.DataNotCertificated);
 	    	nonCertifiedDataResult.write(result);
-	    	logger.info(result);
+	    	// 2018/01/09 ETC FRA 1.4, Capgemini, results not logged
+			// logger.info(result);
 	    	result = String.format(headerFormatter, "", TextInternationalization.getString("resultsFile.headerColumns.data.sending"), TextInternationalization.getString("resultsFile.headerColumns.data.reception"));
 	    	nonCertifiedDataResult.write(result);
-			logger.info(result);
+			// 2018/01/09 ETC FRA 1.4, Capgemini, results not logged
+			// logger.info(result);
 	    	result = HlaResultDataModel.writeResults(eBuildResults.DataNotCertificated, fileWriter, formatter).getString();
 	    	nonCertifiedDataResult.write(result);
-	    	logger.info(result);
+	    	// 2018/01/09 ETC FRA 1.4, Capgemini, results not logged
+			// logger.info(result);
+			
+			// 2018/01/09 ETC FRA 1.4, Capgemini, results not logged
+			// Log results filenames
+			logger.info(TextInternationalization.getString("etc_fra.lookAtResultsFiles")); 
+			logger.info(" - " + certifiedDataResultFile.getAbsolutePath()); 
+			logger.info(" - " + nonCertifiedDataResultFile.getAbsolutePath());
+
+			
 		}
 		catch (Exception e) {
 			return false;
